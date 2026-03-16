@@ -1,8 +1,0 @@
-# -*- coding: utf-8 -*-
-# 米筐 RQData 账号配置（勿提交到 git）
-# 使用步骤：
-#   1. 复制本文件为 config_local.py：  cp config_local.py.example config_local.py
-#   2. 在 config_local.py 中填入你的米筐账号、密码
-
-RQDATA_USERNAME = "你的米筐账号"
-RQDATA_PASSWORD = "你的米筐密码"

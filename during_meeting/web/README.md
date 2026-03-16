@@ -30,12 +30,17 @@ streamlit run app_月度会议查询.py
 
 部署完成后，把得到的**公网 URL（或域名）**发给别人，对方用浏览器打开即可使用。
 
-## 依赖
+## 数据准备
 
-本目录或项目根目录执行：
+应用需要 `output/` 目录下的数据文件。若无数据，请先运行数据生成脚本：
 
-```bash
-pip install -r requirements.txt
-```
+1. 确保安装依赖：`pip install -r requirements.txt`
+2. 运行数据处理脚本（在项目根目录执行）：
+   ```bash
+   # 生成基础数据（按需运行相关脚本）
+   python 计算逻辑/生成受影响显著一级行业_中信30.py  # 或其他相关脚本
+   python 计算逻辑/按年按月份拆表_中信30.py
+   ```
+3. 确认 `output/` 目录有数据文件后，再运行应用。
 
-`requirements.txt` 需包含：`streamlit`、`pandas`。若根目录已有，可直接用根目录的。
+**注意**：`output/` 目录已加入 `.gitignore`，不会提交到 Git。请在部署前本地生成数据，或修改代码从其他来源加载数据。

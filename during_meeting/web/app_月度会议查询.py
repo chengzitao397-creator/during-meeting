@@ -17,9 +17,30 @@ from typing import Tuple, Optional
 import pandas as pd
 import streamlit as st
 
-# 项目根目录（web 的上一级）与 output 目录
-BASE = Path(__file__).resolve().parent.parent
-OUT_DIR = BASE / "output"
+# 项目根目录（web 的上一级）。有的仓库结构为：
+#   /.../during_meeting/web
+#   /.../during_meeting/output
+# 也有结构：
+#   /.../during-meeting/during_meeting/web
+#   /.../during-meeting/output
+# 优先使用存在的 output 目录。
+CUR = Path(__file__).resolve()
+BASE = CUR.parent.parent
+ALT_BASE = CUR.parents[2] if len(CUR.parents) >= 3 else BASE
+
+# 支持环境变量 DATA_DIR 指定数据目录
+data_dir_env = os.getenv("DATA_DIR")
+if data_dir_env:
+    OUT_DIR = Path(data_dir_env)
+else:
+    OUT_DIR = None
+    for candidate in (BASE / "output", ALT_BASE / "output"):
+        if candidate.exists():
+            OUT_DIR = candidate
+            break
+    if OUT_DIR is None:
+        OUT_DIR = BASE / "output"
+
 # 月度 CSV 按年份放在 output/{年}/ 下，文件名：受影响显著一级行业_{年}M{月}_中信30.csv
 FILE_PATTERN = re.compile(r"受影响显著一级行业_(\d{4})M(\d{2})_中信30\.csv")
 # 年份范围：网站始终可选的年份（即使暂无该年数据也显示，避免“空空如也”）
